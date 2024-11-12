@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "487788892163",
+    "project_id": "our-faridpur",
+    "storage_bucket": "our-faridpur.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487788892163:android:41655b928b614565783e36",
+        "android_client_info": {
+          "package_name": "com.example.our_faridpur"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT2oHGlvXYJxHTQUasYFYHxE6j7gMc1z8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
