@@ -8,12 +8,14 @@ import 'firebase_options.dart';
 
 import 'routes/routes_name.dart';
 import 'routes/routes_page.dart';
+import 'views/home/upload_data.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+ // await uploadCategoriesData();
   runApp(const MyApp());
 }
 
