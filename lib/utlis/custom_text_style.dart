@@ -23,6 +23,8 @@ class HeadingTwo extends StatelessWidget {
 
     return Text(
       data,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: color ?? AppColors.textColor,
         fontSize: fontSize ?? sizeHeight * .024,

@@ -9,8 +9,8 @@ ThemeData lightTheme(context) {
   final sizeH = MediaQuery.sizeOf(context).height;
   return ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+
       useMaterial3: true,
-      scaffoldBackgroundColor: Colors.white,
       appBarTheme:  const AppBarTheme(
         centerTitle: true,
         backgroundColor:  AppColors.primaryColor,

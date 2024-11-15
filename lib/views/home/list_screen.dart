@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:our_faridpur/utlis/app_colors.dart';
+import 'package:our_faridpur/utlis/app_icons.dart';
+import 'package:our_faridpur/utlis/custom_text_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ListScreen extends StatelessWidget {
@@ -24,10 +27,11 @@ class ListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sizeH=MediaQuery.sizeOf(context).height;
     return Scaffold(
       appBar: AppBar(
-        title: Text('$category List'),
-        backgroundColor: Colors.blue,
+        title: HeadingTwo(data: '$category List',color: Colors.white,),
+ 
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: _firestore.collection('faridpur').doc(category.toLowerCase()).get(),
@@ -57,25 +61,30 @@ class ListScreen extends StatelessWidget {
                   ? phoneData.join(', ')
                   : phoneData.toString();
 
-              return Card(
-                child: ListTile(
-                  title: Text(categoriesData['name'] ?? 'Unknown'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(categoriesData['address'] ?? 'No address'),
-                      SizedBox(height: 10.h),
-                      Text(phoneNumbers),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    onPressed: () async {
-                      final numberToDial = phoneData is List ? phoneData[0] : phoneData;
-                      if (numberToDial != null) {
-                        _launchDialer(numberToDial);
-                      }
-                    },
-                    icon: const Icon(Icons.phone),
+              return Padding(
+                padding:  EdgeInsets.symmetric(horizontal: sizeH*.01,vertical: sizeH*.001),
+                child: Card(
+color: AppColors.cardColor.withOpacity(0.8),
+                  elevation: 2,
+                  child: ListTile(
+                    title: HeadingThree(data: categoriesData['name'] ?? 'Unknown',color: Colors.green,fontWeight: FontWeight.w600,),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HeadingThree(data:"ঠিকানা : ${categoriesData['address']}",fontSize:sizeH*.016 ,color: AppColors.textColor.withOpacity(0.6)),
+                        SizedBox(height: sizeH*.005),
+                        HeadingThree(data:"যোগাযোগ : $phoneNumbers",fontSize:sizeH*.016),
+                      ],
+                    ),
+                    trailing: GestureDetector(
+
+                        onTap:  () async {
+                          final numberToDial = phoneData is List ? phoneData[0] : phoneData;
+                          if (numberToDial != null) {
+                            _launchDialer(numberToDial);
+                          }
+                        },
+                        child: Lottie.asset(AppIcons.phone2,height: sizeH*.08,)),
                   ),
                 ),
               );
