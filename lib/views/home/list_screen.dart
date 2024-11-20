@@ -8,8 +8,6 @@ import 'package:our_faridpur/utlis/custom_text_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 
-
-
 class ListScreen extends StatefulWidget {
   final String category;
 
@@ -42,7 +40,7 @@ class _ListScreenState extends State<ListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: HeadingTwo(data: '${widget.category}', color: Colors.white,),
+        title: HeadingTwo(data: widget.category, color: Colors.white,),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: _firestore.collection('faridpur').doc(widget.category.toLowerCase()).get(),
@@ -76,7 +74,7 @@ class _ListScreenState extends State<ListScreen> {
                     fillColor: Colors.white.withOpacity(0.5),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(color: AppColors.primaryColor),
+                      borderSide: const BorderSide(color: AppColors.primaryColor),
                     ),
                   ),
                   onChanged: (value) {
@@ -95,12 +93,12 @@ class _ListScreenState extends State<ListScreen> {
 
                     // Handle phone numbers for display and dialer
                     final phoneData = categoriesData['phone'];
-                    final phoneNumbers = phoneData is List
+                    final phoneNumbers = (phoneData != null && phoneData is List)
                         ? phoneData.join(', ')
-                        : phoneData.toString();
+                        : (phoneData != null ? phoneData.toString() : "");
 
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: sizeH * .01, vertical: sizeH * .001),
+                      padding: EdgeInsets.symmetric(horizontal: sizeH * .016, vertical: sizeH * .002),
                       child: Card(
                         color: AppColors.cardColor.withOpacity(0.8),
                         elevation: 2,
@@ -121,13 +119,16 @@ class _ListScreenState extends State<ListScreen> {
                                   color: AppColors.textColor.withOpacity(0.6),
                                 ),
                               SizedBox(height: sizeH * .005),
-                              HeadingThree(
-                                data: "যোগাযোগ : $phoneNumbers",
-                                fontSize: sizeH * .016,
-                              ),
+                              // Display the phone number only if it is not empty or null
+                              if (phoneNumbers.isNotEmpty)
+                                HeadingThree(
+                                  data: "যোগাযোগ : $phoneNumbers",
+                                  fontSize: sizeH * .016,
+                                ),
                             ],
                           ),
-                          trailing: GestureDetector(
+                          trailing: (phoneNumbers.isNotEmpty) // Only show the Lottie icon if phone number exists
+                              ? GestureDetector(
                             onTap: () async {
                               final numberToDial = phoneData is List ? phoneData[0] : phoneData;
                               if (numberToDial != null) {
@@ -135,11 +136,11 @@ class _ListScreenState extends State<ListScreen> {
                               }
                             },
                             child: Lottie.asset(AppIcons.phone, height: sizeH * .08),
-                          ),
+                          )
+                              : null, // Don't show anything if phone number is empty
                         ),
                       ),
                     );
-
                   },
                 )),
               ),
