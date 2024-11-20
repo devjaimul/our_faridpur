@@ -16,10 +16,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, dynamic>> categories = [
-    {'name': 'Hospital', 'icon': Icons.local_hospital, 'lottie': AppIcons.hospital},
-    {'name': 'Hotel', 'icon': Icons.hotel, 'lottie': null},
-    {'name': 'Ambulance', 'icon': Icons.local_shipping, 'lottie': null},
-    {'name': 'Police', 'icon': Icons.local_police, 'lottie': null},
+    {'name': 'হাসপাতাল', 'icon': Icons.local_hospital, 'lottie': AppIcons.hospital},
+    {'name': 'হোটেল', 'icon': Icons.hotel, 'lottie': AppIcons.hotel},
+    {'name': 'অ্যাম্বুলেন্স', 'icon': Icons.local_shipping, 'lottie': AppIcons.ambulance},
+    {'name': 'পুলিশ', 'icon': Icons.local_police, 'lottie': AppIcons.police},
+    {'name': 'জোনাল অফিস', 'icon': Icons.landscape, 'lottie': null},
+    {'name': 'বিদ্যুৎ', 'icon': Icons.electric_bolt, 'lottie': null},
+    {'name': 'বিশেষজ্ঞ ডাক্তার', 'icon': Icons.person, 'lottie': null},
   ];
 
   @override
@@ -79,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: sizeH*.1,
                                 child: Lottie.asset(
+
                                   lottiePath,
 
 
