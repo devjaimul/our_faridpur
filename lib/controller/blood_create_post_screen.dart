@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class BloodCreatePostScreenController extends GetxController {
   final patientProblemController = TextEditingController();
   final bloodGroupController = TextEditingController();
+  final bloodGroup = ''.obs; // Use RxString for blood group
   final bloodQuantityController = TextEditingController();
   final hemoglobinLevelController = TextEditingController();
   final donationTimeController = TextEditingController();
@@ -27,7 +28,7 @@ class BloodCreatePostScreenController extends GetxController {
   }
 
   Future<void> submitPost(BuildContext context) async {
-    if (bloodGroupController.text.isEmpty || bloodQuantityController.text.isEmpty) {
+    if (bloodGroup.value.isEmpty || bloodQuantityController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all required fields.')),
       );
@@ -36,7 +37,7 @@ class BloodCreatePostScreenController extends GetxController {
 
     final data = {
       "patientProblem": patientProblemController.text,
-      "bloodGroup": bloodGroupController.text,
+      "bloodGroup": bloodGroup.value, // Use the reactive blood group value
       "bloodQuantity": bloodQuantityController.text,
       "hemoglobinLevel": hemoglobinLevelController.text,
       "donationTime": donationTimeController.text,
@@ -57,3 +58,4 @@ class BloodCreatePostScreenController extends GetxController {
     }
   }
 }
+

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:our_faridpur/controller/blood_post_screen.dart';
+import 'package:our_faridpur/utlis/app_colors.dart';
 import 'package:our_faridpur/utlis/custom_text_style.dart';
 import 'package:our_faridpur/views/blood/blood_create_post_screen.dart';
+import 'package:our_faridpur/widgets/dialog.dart';
+
 
 class BloodPostScreen extends StatelessWidget {
   BloodPostScreen({super.key});
@@ -17,7 +21,7 @@ class BloodPostScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const HeadingTwo(data: "Blood Posts"),
+        title:  HeadingTwo(data: "রক্তের পোস্ট",color: Colors.white,),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("blood").snapshots(),
@@ -55,7 +59,7 @@ class BloodPostScreen extends StatelessWidget {
                       HeadingThree(data: "📅 রক্তদানের তারিখ: ${data['donationDate'] ?? "N/A"}"),
                       HeadingThree(data: "🏥 রক্তদানের স্থান: ${data['donationPlace'] ?? "N/A"}"),
                       HeadingThree(data: "☎ যোগাযোগ: ${data['contact'] ?? "N/A"}"),
-                      const SizedBox(height: 10),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -65,7 +69,7 @@ class BloodPostScreen extends StatelessWidget {
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => controller.deletePost(post.id),
+                            onPressed: () => _showDeleteDialog(context, post.id),
                           ),
                         ],
                       ),
@@ -78,10 +82,28 @@ class BloodPostScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primaryColor,
         onPressed: () {
           Get.to(() => const BloodCreatePostScreen());
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+  }
+
+  // Function to show delete confirmation dialog
+  void _showDeleteDialog(BuildContext context, String postId) {
+    showDialog(
+      context: context,
+      builder: (context) => CustomDialog(
+        title: 'Are you sure you want to delete this post?',
+        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Yes, Delete',
+        onCancel: () => Navigator.pop(context),
+        onConfirm: () {
+          controller.deletePost(postId);
+          Navigator.pop(context); // Close the dialog
+        },
       ),
     );
   }
@@ -91,36 +113,52 @@ class BloodPostScreen extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Edit Post"),
-        content: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildTextField("Patient Problem", controller.patientProblemController),
-              _buildPopupMenuField("Blood Group", controller.bloodGroupController),
-              _buildTextField("Blood Quantity", controller.bloodQuantityController),
-              _buildTextField("Hemoglobin Level", controller.hemoglobinLevelController),
-              _buildDateTimePicker(context, "Donation Time", controller.donationTimeController, isTimePicker: true),
-              _buildDateTimePicker(context, "Donation Date", controller.donationDateController, isTimePicker: false),
-              _buildTextField("Donation Place", controller.donationPlaceController),
-              _buildTextField("Contact", controller.contactController),
-            ],
+      builder: (context) {
+        // Get the width of the screen
+        final sizeWidth = MediaQuery.of(context).size.width;
+
+        return AlertDialog(
+          title: Center(child: HeadingTwo(data: 'Edit Post')),
+          content: SizedBox(
+            width: sizeWidth * 0.85,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildTextField("রোগীর সমস্যা", controller.patientProblemController),
+                  _buildPopupMenuField("রক্তের গ্রুপ", controller.bloodGroupController),
+                  _buildTextField("রক্তের পরিমাণ", controller.bloodQuantityController),
+                  _buildTextField("হিমোগ্লোবিনের", controller.hemoglobinLevelController),
+                  _buildDateTimePicker(context, "রক্তদানের সময়", controller.donationTimeController, isTimePicker: true),
+                  _buildDateTimePicker(context, "রক্তদানের তারিখ", controller.donationDateController, isTimePicker: false),
+                  _buildTextField("রক্তদানের স্থান", controller.donationPlaceController),
+                  _buildTextField("যোগাযোগ", controller.contactController),
+                  SizedBox(height: 10.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: HeadingThree(data: 'Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.updatePost(postId);
+                          Get.back();
+                        },
+                        child: HeadingThree(data: 'Save', color: Colors.white),
+                        style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryColor),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              controller.updatePost(postId);
-              Navigator.pop(context);
-            },
-            child: const Text("Save"),
-          ),
-        ],
-      ),
+          actions: [],
+        );
+      },
     );
   }
 

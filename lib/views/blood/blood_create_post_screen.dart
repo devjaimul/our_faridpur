@@ -23,7 +23,7 @@ class BloodCreatePostScreen extends StatelessWidget {
           child: Column(
             children: [
               _buildTextField(
-                label: "💁রোগীর সমস্যা:-",
+                label: "রোগীর সমস্যা",
                 controller: controller.patientProblemController,
                 keyboardType: TextInputType.text,
               ),
@@ -31,39 +31,39 @@ class BloodCreatePostScreen extends StatelessWidget {
               _buildBloodGroupField(context, controller),
               SizedBox(height: sizeHeight * 0.02),
               _buildTextField(
-                label: "💉রক্তের পরিমাণ:-",
+                label: "রক্তের পরিমাণ ",
                 controller: controller.bloodQuantityController,
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: sizeHeight * 0.02),
               _buildTextField(
-                label: "💊হিমোগ্লোবিনের:-",
+                label: "হিমোগ্লোবিনের পরিমাণ",
                 controller: controller.hemoglobinLevelController,
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: sizeHeight * 0.02),
               _buildDateTimePicker(
                 context: context,
-                label: "⌚রক্তদানের সময়:-",
+                label: "রক্তদানের সময় ",
                 controller: controller.donationTimeController,
                 isTimePicker: true,
               ),
               SizedBox(height: sizeHeight * 0.02),
               _buildDateTimePicker(
                 context: context,
-                label: "📅রক্তদানের তারিখ:-",
+                label: "রক্তদানের তারিখ ",
                 controller: controller.donationDateController,
                 isTimePicker: false,
               ),
               SizedBox(height: sizeHeight * 0.02),
               _buildTextField(
-                label: "🏥রক্তদানের স্থান:-",
+                label: "রক্তদানের স্থান ",
                 controller: controller.donationPlaceController,
                 keyboardType: TextInputType.text,
               ),
               SizedBox(height: sizeHeight * 0.02),
               _buildTextField(
-                label: "☎যোগাযোগ :",
+                label: "যোগাযোগ ",
                 controller: controller.contactController,
                 keyboardType: TextInputType.phone,
               ),
@@ -93,7 +93,6 @@ class BloodCreatePostScreen extends StatelessWidget {
       decoration: InputDecoration(labelText: label),
     );
   }
-
   Widget _buildBloodGroupField(BuildContext context, BloodCreatePostScreenController controller) {
     final bloodGroups = [
       "A+",
@@ -108,16 +107,16 @@ class BloodCreatePostScreen extends StatelessWidget {
 
     return Obx(
           () => TextField(
-        controller: controller.bloodGroupController,
-        readOnly: true,
+        controller: TextEditingController(text: controller.bloodGroup.value), // Display the selected value
+        readOnly: true, // Make it read-only
         decoration: InputDecoration(
-          labelText: "🔴রক্তের গ্রুপ:-",
+          labelText: "রক্তের গ্রুপ",
           suffixIcon: PopupMenuButton<String>(
-            icon: const Icon(Icons.arrow_drop_down),
+            icon: const Icon(Icons.arrow_drop_down), // Dropdown icon
             onSelected: (value) {
-              controller.bloodGroupController.text = value;
+              controller.bloodGroup.value = value; // Update the selected value
             },
-            itemBuilder: (BuildContext context) {
+            itemBuilder: (context) {
               return bloodGroups.map((group) {
                 return PopupMenuItem(
                   value: group,
@@ -130,6 +129,8 @@ class BloodCreatePostScreen extends StatelessWidget {
       ),
     );
   }
+
+
 
   Widget _buildDateTimePicker({
     required BuildContext context,
