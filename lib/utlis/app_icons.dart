@@ -14,6 +14,9 @@ class AppIcons{
   static var internet="$base/internet.json";
   static var bus="$base/bus.json";
   static var train="$base/train.json";
+  static var tree="$base/tree.json";
+  static var post="$base/post.json";
+  static var nothing="$base/nothing.json";
 
 
 

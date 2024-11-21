@@ -26,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'ফায়ার সার্ভিস', 'icon': Icons.fire_extinguisher, 'lottie': AppIcons.fire},
     {'name': 'বাস', 'icon': Icons.car_rental, 'lottie': AppIcons.bus},
     {'name': 'ট্রেন', 'icon': Icons.train, 'lottie': AppIcons.train},
+    {'name': 'নার্সারি', 'icon': Icons.account_tree, 'lottie': AppIcons.tree},
+    {'name': 'পোস্ট কোড', 'icon': Icons.code, 'lottie': AppIcons.post},
 
   ];
 

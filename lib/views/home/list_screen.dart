@@ -40,7 +40,7 @@ class _ListScreenState extends State<ListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: HeadingTwo(data: widget.category, color: Colors.white,),
+        title: HeadingTwo(data: widget.category, color: Colors.white),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: _firestore.collection('faridpur').doc(widget.category.toLowerCase()).get(),
@@ -85,64 +85,78 @@ class _ListScreenState extends State<ListScreen> {
               ),
               // List of filtered items
               Expanded(
-                child: Obx(() => ListView.builder(
-                  itemCount: _controller.filteredItems.length,
-                  itemBuilder: (context, index) {
-                    final entry = _controller.filteredItems[index];
-                    final categoriesData = entry.value as Map<String, dynamic>;
-
-                    // Handle phone numbers for display and dialer
-                    final phoneData = categoriesData['phone'];
-                    final phoneNumbers = (phoneData != null && phoneData is List)
-                        ? phoneData.join(', ')
-                        : (phoneData != null ? phoneData.toString() : "");
-
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: sizeH * .016, vertical: sizeH * .002),
-                      child: Card(
-                        color: AppColors.cardColor.withOpacity(0.8),
-                        elevation: 2,
-                        child: ListTile(
-                          title: HeadingThree(
-                            data: categoriesData['name'] ?? 'Unknown',
-                            color: Colors.green,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Display the address only if it is not empty or null
-                              if (categoriesData['address'] != null && categoriesData['address'].toString().isNotEmpty)
-                                HeadingThree(
-                                  data: "${categoriesData['address']}",
-                                  fontSize: sizeH * .016,
-                                  color: AppColors.textColor.withOpacity(0.6),
-                                ),
-                              SizedBox(height: sizeH * .005),
-                              // Display the phone number only if it is not empty or null
-                              if (phoneNumbers.isNotEmpty)
-                                HeadingThree(
-                                  data: "যোগাযোগ : $phoneNumbers",
-                                  fontSize: sizeH * .016,
-                                ),
-                            ],
-                          ),
-                          trailing: (phoneNumbers.isNotEmpty) // Only show the Lottie icon if phone number exists
-                              ? GestureDetector(
-                            onTap: () async {
-                              final numberToDial = phoneData is List ? phoneData[0] : phoneData;
-                              if (numberToDial != null) {
-                                _launchDialer(numberToDial);
-                              }
-                            },
-                            child: Lottie.asset(AppIcons.phone, height: sizeH * .08),
-                          )
-                              : null, // Don't show anything if phone number is empty
-                        ),
+                child: Obx(() {
+                  // If no filtered items match the search, show the Lottie animation
+                  if (_controller.filteredItems.isEmpty) {
+                    return Center(
+                      child: Lottie.asset(
+                        AppIcons.nothing, // Path to your Lottie asset
+                      // Responsive width
+                        height: sizeH * 0.3, // Responsive height
+                        fit: BoxFit.cover,
                       ),
                     );
-                  },
-                )),
+                  }
+
+                  return ListView.builder(
+                    itemCount: _controller.filteredItems.length,
+                    itemBuilder: (context, index) {
+                      final entry = _controller.filteredItems[index];
+                      final categoriesData = entry.value as Map<String, dynamic>;
+
+                      // Handle phone numbers for display and dialer
+                      final phoneData = categoriesData['phone'];
+                      final phoneNumbers = (phoneData != null && phoneData is List)
+                          ? phoneData.join(', ')
+                          : (phoneData != null ? phoneData.toString() : "");
+
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: sizeH * .016, vertical: sizeH * .002),
+                        child: Card(
+                          color: AppColors.cardColor.withOpacity(0.8),
+                          elevation: 2,
+                          child: ListTile(
+                            title: HeadingThree(
+                              data: categoriesData['name'] ?? 'Unknown',
+                              color: Colors.green,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Display the address only if it is not empty or null
+                                if (categoriesData['address'] != null && categoriesData['address'].toString().isNotEmpty)
+                                  HeadingThree(
+                                    data: "${categoriesData['address']}",
+                                    fontSize: sizeH * .016,
+                                    color: AppColors.textColor.withOpacity(0.6),
+                                  ),
+                                SizedBox(height: sizeH * .005),
+                                // Display the phone number only if it is not empty or null
+                                if (phoneNumbers.isNotEmpty)
+                                  HeadingThree(
+                                    data: "যোগাযোগ : $phoneNumbers",
+                                    fontSize: sizeH * .016,
+                                  ),
+                              ],
+                            ),
+                            trailing: (phoneNumbers.isNotEmpty) // Only show the Lottie icon if phone number exists
+                                ? GestureDetector(
+                              onTap: () async {
+                                final numberToDial = phoneData is List ? phoneData[0] : phoneData;
+                                if (numberToDial != null) {
+                                  _launchDialer(numberToDial);
+                                }
+                              },
+                              child: Lottie.asset(AppIcons.phone, height: sizeH * .08),
+                            )
+                                : null, // Don't show anything if phone number is empty
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
             ],
           );

@@ -7,91 +7,92 @@ Future<void> uploadCategoriesData() async {
   final List<Map<String, dynamic>> categoriesData =
   [
     {
-      "name": "ফরিদপুর-ভাঙ্গা (সকাল: ৬:৫৮)",
-      "address": "রাজবাড়ী এক্সপ্রেস",
-      "phone": []
+      "name": "Faridpur HO",
+      "address": "Sadar\n (7800)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-খুলনা (দুপুর: ২:১৭)",
-      "address": "নক্সিকাথা কমিউটার ট্রেন",
-      "phone": []
+      "name": "Kanaipur SO",
+      "address": "Sadar\n (7801)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-ঢাকা (সকাল: ৭:১৮)",
-      "address": "নক্সিকাথা কমিউটার ট্রেন",
-      "phone": []
+      "name": "Ambicapur SO",
+      "address": "Sadar\n (7802)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-রাজবাড়ী (সকাল: ৯:০৮)",
-      "address": "রাজবাড়ী এক্সপ্রেস",
-      "phone": []
+      "name": "Baitul Aman Politechnoque Institute TSO",
+      "address": "Sadar\n (7803)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-খুলনা (সকাল: ১০:০৮)",
-      "address": "সুন্দরবন এক্সপ্রেস\nসাপ্তাহিক বন্ধ বুধবার",
-      "phone": []
+      "name": "Sree Angan SO",
+      "address": "Sadar\n (7804)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-ঢাকা (সকাল: ১১:৪০)",
-      "address": "মধুমতি এক্সপ্রেস\nসাপ্তাহিক বন্ধ বৃহস্পতিবার",
-      "phone": []
+      "name": "Char Bhadrasan UPO",
+      "address": "Char Bhadrasan\n (7810)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-রাজশাহী (বিকাল: ৫:১৮)",
-      "address": "মধুমতি এক্সপ্রেস\nসাপ্তাহিক বন্ধ বৃহস্পতিবার",
-      "phone": []
+      "name": "Sadarpur UPO",
+      "address": "Sadarpur\n (7820)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-ভাঙ্গা (সন্ধ্যা: ০৬:০৫)",
-      "address": "রাজবাড়ী এক্সপ্রেস",
-      "phone": []
+      "name": "Hatkrishnapur SO",
+      "address": "Sadarpur\n (7821)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-ঢাকা (রাত: ০২:৫৭)",
-      "address": "সুন্দরবন এক্সপ্রেস\nসাপ্তাহিক বন্ধ বুধবার",
-      "phone": []
+      "name": "Biswajaker Manjil SO",
+      "address": "Sadarpur\n (7822)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-বেনাপোল (রাত: ০১:৩৮)",
-      "address": "বেনাপোল এক্সপ্রেস\nসাপ্তাহিক বন্ধ বুধবার",
-      "phone": []
+      "name": "Bhanga UPO",
+      "address": "Bhanga\n (7830)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-ঢাকা (সন্ধ্যা: ০৬:৪৫)",
-      "address": "벤াপোল এক্সপ্রেস\nসাপ্তাহিক বন্ধ বুধবার",
-      "phone": []
+      "name": "Nagarkanda UPO",
+      "address": "Nagarkanda\n (7840)",
+      "phone": [""]
     },
     {
-      "name": "ফরিদপুর-রাজবাড়ী (রাত: ০৮:২২)",
-      "address": "রাজবাড়ী এক্সপ্রেস",
-      "phone": []
+      "name": "Talma SO",
+      "address": "Nagarkanda\n (7841)",
+      "phone": [""]
     },
     {
-      "name": "ঢাকা-ফরিদপুর (সকাল: ৮:১৫)",
-      "address": "সুন্দরবন এক্সপ্রেস\nসাপ্তাহিক বন্ধ বুধবার",
-      "phone": []
+      "name": "Madhukhali UPO",
+      "address": "Madhukhali\n (7850)",
+      "phone": [""]
     },
     {
-      "name": "ঢাকা-ফরিদপুর (সকাল: ১১:৪০)",
-      "address": "নক্সিকাথা কমিউটার",
-      "phone": []
+      "name": "Kamarkhali SO",
+      "address": "Madhukhali\n (7851)",
+      "phone": [""]
     },
     {
-      "name": "ঢাকা-ফরিদপুর (বিকাল: ৩:০০)",
-      "address": "মধুমতি",
-      "phone": []
+      "name": "Boalmari UPO",
+      "address": "Boalmari\n (7860)",
+      "phone": [""]
     },
     {
-      "name": "ঢাকা-ফরিদপুর (রাত: ১১:৪৫)",
-      "address": "বেনাপোল এক্সপ্রেস",
-      "phone": []
+      "name": "Rupapat EDSO",
+      "address": "Boalmari\n (7861)",
+      "phone": [""]
     },
     {
-      "name": "ঢাকা-ভাঙ্গা (সন্ধ্যা: ৬:00)",
-      "address": "ভাঙ্গা কমিউটার",
-      "phone": []
+      "name": "Alfadanga UPO",
+      "address": "Alfadanga\n (7870)",
+      "phone": [""]
     }
   ]
+
 
 
 
@@ -116,7 +117,7 @@ Future<void> uploadCategoriesData() async {
   for (var categories in categoriesData) {
     final categoriesName = categories['name'] as String;
     //change the categories name
-    await firestore.collection('faridpur').doc('ট্রেন').set({
+    await firestore.collection('faridpur').doc('পোস্ট কোড').set({
       categoriesName: {
         "name": categoriesName,
         "address": categories['address'] ?? "",
