@@ -8,6 +8,7 @@ class AppColors{
   static const Color buttonColor=Color(0xff25363f);
   static const Color buttonSecondColor=Color(0xff758DFF);
   static const Color iconColor=Color(0xff028174);
+  static const Color splashColor=Color(0xff028174);
 
 
 }

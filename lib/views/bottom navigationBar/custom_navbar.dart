@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:our_faridpur/views/blood/blood_screen.dart';
 import 'package:our_faridpur/views/home/home_screen.dart';
+import 'package:our_faridpur/views/suppourt/support.dart';
 import '../../../utlis/app_colors.dart';
 
 
@@ -17,7 +18,7 @@ class CustomNavbarState extends State<CustomNavbar> {
   List<Widget> screens = [
     const HomeScreen(),
    const BloodScreen(),
-   const Center(child: CircularProgressIndicator()),
+  const SupportScreen()
   ];
 
   int currentIndex = 0;
@@ -60,7 +61,7 @@ class CustomNavbarState extends State<CustomNavbar> {
             _buildNavItem(Icons.home, "হোম", 0),
             _buildNavItem(Icons.water_drop, "রক্ত", 1),
            // _buildNavItem(Icons.event, "ইভেন্ট", 2),
-            _buildNavItem(Icons.person, "প্রোফাইল", 2),
+            _buildNavItem(Icons.support_agent, "সাপোর্ট", 2),
           ],
         ),
       ),

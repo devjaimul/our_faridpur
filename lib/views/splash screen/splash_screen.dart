@@ -1,10 +1,8 @@
 import 'dart:async';
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:our_faridpur/routes/routes_name.dart';
-import 'package:our_faridpur/utlis/app_images.dart';
+import 'package:our_faridpur/utlis/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,34 +14,19 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Get.offAllNamed(RouteNames.onboardingScreen);
+      Get.offAllNamed(RouteNames.customNavBar);
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    final sizeH = MediaQuery.sizeOf(context).height;
+    final sizeW = MediaQuery.sizeOf(context).width;
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.center,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFC0CCFF), // Top color (light)
-              Color(0xFF5271FF), // Bottom color (dark)
-            ],
-          ),
-        ),
-        child: Center(
-          child: Image(
-            image: const AssetImage(""),
-            width: double.infinity, // Adjust as needed
-            height: sizeH*.32, // Adjust as needed
-          ),
-        ),
+      backgroundColor: AppColors.primaryColor.withOpacity(0.2), // Dark grayish-black background
+      body: Center(
+        child: Image(image: AssetImage('assets/images/appLogo2.png',),width: sizeW*.8,),
       ),
     );
   }
