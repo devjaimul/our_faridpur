@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:our_faridpur/controller/blood_post_screen.dart';
 import 'package:our_faridpur/utlis/custom_text_style.dart';
 import 'package:our_faridpur/views/blood/blood_create_post_screen.dart';
 
 class BloodPostScreen extends StatelessWidget {
-  const BloodPostScreen({super.key});
+  BloodPostScreen({super.key});
+
+  final controller = Get.put(BloodPostScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +37,6 @@ class BloodPostScreen extends StatelessWidget {
               final post = posts[index];
               final data = post.data() as Map<String, dynamic>;
 
-              // Retrieve data or leave blank if not present
-              final patientProblem = data['patientProblem'] ?? "";
-              final bloodGroup = data['bloodGroup'] ?? "";
-              final bloodQuantity = data['bloodQuantity'] ?? "";
-              final hemoglobinLevel = data['hemoglobinLevel'] ?? "";
-              final donationTime = data['donationTime'] ?? "";
-              final donationPlace = data['donationPlace'] ?? "";
-              final contact = data['contact'] ?? "";
-
               return Card(
                 margin: EdgeInsets.symmetric(
                   horizontal: sizeWidth * 0.05,
@@ -53,30 +47,25 @@ class BloodPostScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HeadingTwo(data: "💁 রোগীর সমস্যা: ${patientProblem.isNotEmpty ? patientProblem : "N/A"}"),
-                      HeadingThree(data: "🔴 রক্তের গ্রুপ: ${bloodGroup.isNotEmpty ? bloodGroup : "N/A"}"),
-                      HeadingThree(data: "💉 রক্তের পরিমাণ: ${bloodQuantity.isNotEmpty ? bloodQuantity : "N/A"}"),
-                      HeadingThree(data: "💊 হিমোগ্লোবিনের: ${hemoglobinLevel.isNotEmpty ? hemoglobinLevel : "N/A"}"),
-                      HeadingThree(data: "⌚ রক্তদানের সময়: ${donationTime.isNotEmpty ? donationTime : "N/A"}"),
-                      HeadingThree(data: "🏥 রক্তদানের স্থান: ${donationPlace.isNotEmpty ? donationPlace : "N/A"}"),
-                      HeadingThree(data: "☎ যোগাযোগ: ${contact.isNotEmpty ? contact : "N/A"}"),
+                      HeadingTwo(data: "💁 রোগীর সমস্যা: ${data['patientProblem'] ?? "N/A"}"),
+                      HeadingThree(data: "🔴 রক্তের গ্রুপ: ${data['bloodGroup'] ?? "N/A"}"),
+                      HeadingThree(data: "💉 রক্তের পরিমাণ: ${data['bloodQuantity'] ?? "N/A"}"),
+                      HeadingThree(data: "💊 হিমোগ্লোবিনের: ${data['hemoglobinLevel'] ?? "N/A"}"),
+                      HeadingThree(data: "⌚ রক্তদানের সময়: ${data['donationTime'] ?? "N/A"}"),
+                      HeadingThree(data: "📅 রক্তদানের তারিখ: ${data['donationDate'] ?? "N/A"}"),
+                      HeadingThree(data: "🏥 রক্তদানের স্থান: ${data['donationPlace'] ?? "N/A"}"),
+                      HeadingThree(data: "☎ যোগাযোগ: ${data['contact'] ?? "N/A"}"),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          // Edit Button
                           IconButton(
-                            icon: Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () {
-                              _showEditDialog(context, post.id, data);
-                            },
+                            icon: const Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () => _showEditDialog(context, post.id, data),
                           ),
-                          // Delete Button
                           IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              _deletePost(post.id);
-                            },
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => controller.deletePost(post.id),
                           ),
                         ],
                       ),
@@ -88,31 +77,17 @@ class BloodPostScreen extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){Get.to(BloodCreatePostScreen());},child: Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(() => const BloodCreatePostScreen());
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
-  // Delete Post Functionality
-  void _deletePost(String postId) {
-    FirebaseFirestore.instance.collection('blood').doc(postId).delete();
-  }
-
-  // Edit Post Dialog
   void _showEditDialog(BuildContext context, String postId, Map<String, dynamic> data) {
-    final TextEditingController patientProblemController =
-    TextEditingController(text: data['patientProblem'] ?? "");
-    final TextEditingController bloodGroupController =
-    TextEditingController(text: data['bloodGroup'] ?? "");
-    final TextEditingController bloodQuantityController =
-    TextEditingController(text: data['bloodQuantity'] ?? "");
-    final TextEditingController hemoglobinLevelController =
-    TextEditingController(text: data['hemoglobinLevel'] ?? "");
-    final TextEditingController donationTimeController =
-    TextEditingController(text: data['donationTime'] ?? "");
-    final TextEditingController donationPlaceController =
-    TextEditingController(text: data['donationPlace'] ?? "");
-    final TextEditingController contactController =
-    TextEditingController(text: data['contact'] ?? "");
+    controller.initializeControllers(data);
 
     showDialog(
       context: context,
@@ -121,13 +96,14 @@ class BloodPostScreen extends StatelessWidget {
         content: SingleChildScrollView(
           child: Column(
             children: [
-              _buildTextField("Patient Problem", patientProblemController),
-              _buildTextField("Blood Group", bloodGroupController),
-              _buildTextField("Blood Quantity", bloodQuantityController),
-              _buildTextField("Hemoglobin Level", hemoglobinLevelController),
-              _buildTextField("Donation Time", donationTimeController),
-              _buildTextField("Donation Place", donationPlaceController),
-              _buildTextField("Contact", contactController),
+              _buildTextField("Patient Problem", controller.patientProblemController),
+              _buildPopupMenuField("Blood Group", controller.bloodGroupController),
+              _buildTextField("Blood Quantity", controller.bloodQuantityController),
+              _buildTextField("Hemoglobin Level", controller.hemoglobinLevelController),
+              _buildDateTimePicker(context, "Donation Time", controller.donationTimeController, isTimePicker: true),
+              _buildDateTimePicker(context, "Donation Date", controller.donationDateController, isTimePicker: false),
+              _buildTextField("Donation Place", controller.donationPlaceController),
+              _buildTextField("Contact", controller.contactController),
             ],
           ),
         ),
@@ -138,16 +114,7 @@ class BloodPostScreen extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Update Firestore Document
-              FirebaseFirestore.instance.collection('blood').doc(postId).update({
-                'patientProblem': patientProblemController.text,
-                'bloodGroup': bloodGroupController.text,
-                'bloodQuantity': bloodQuantityController.text,
-                'hemoglobinLevel': hemoglobinLevelController.text,
-                'donationTime': donationTimeController.text,
-                'donationPlace': donationPlaceController.text,
-                'contact': contactController.text,
-              });
+              controller.updatePost(postId);
               Navigator.pop(context);
             },
             child: const Text("Save"),
@@ -157,7 +124,6 @@ class BloodPostScreen extends StatelessWidget {
     );
   }
 
-  // Helper Widget to Build TextField
   Widget _buildTextField(String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -165,7 +131,70 @@ class BloodPostScreen extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPopupMenuField(String label, TextEditingController controller) {
+    final bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+          suffixIcon: PopupMenuButton<String>(
+            icon: const Icon(Icons.arrow_drop_down),
+            onSelected: (value) => controller.text = value,
+            itemBuilder: (context) {
+              return bloodGroups
+                  .map((group) => PopupMenuItem(value: group, child: Text(group)))
+                  .toList();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateTimePicker(BuildContext context, String label, TextEditingController controller, {required bool isTimePicker}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+          suffixIcon: IconButton(
+            icon: Icon(isTimePicker ? Icons.access_time : Icons.calendar_today),
+            onPressed: () async {
+              if (isTimePicker) {
+                final pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+                if (pickedTime != null) {
+                  controller.text = pickedTime.format(context);
+                }
+              } else {
+                final pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101),
+                );
+                if (pickedDate != null) {
+                  controller.text =
+                  "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+                }
+              }
+            },
+          ),
         ),
       ),
     );
