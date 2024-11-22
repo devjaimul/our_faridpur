@@ -59,7 +59,7 @@ class HeadingThree extends StatelessWidget {
       style: TextStyle(
         color: color ?? AppColors.textColor,
         fontSize: fontSize ?? sizeHeight * 0.02,
-        fontWeight: fontWeight ?? FontWeight.w500,
+        fontWeight: fontWeight ?? FontWeight.w400,
         backgroundColor: backGroundColor,
       ),
     );

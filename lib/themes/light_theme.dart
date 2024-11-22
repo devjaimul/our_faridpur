@@ -28,7 +28,7 @@ ThemeData lightTheme(context) {
          helperStyle: TextStyle(color: Colors.white,fontSize: sizeH*.014),
          hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black.withOpacity(0.5)),
+            borderSide: BorderSide(color: AppColors.primaryColor.withOpacity(0.5)),
             borderRadius: BorderRadius.circular(50.r),
           ),
           enabledBorder: OutlineInputBorder(

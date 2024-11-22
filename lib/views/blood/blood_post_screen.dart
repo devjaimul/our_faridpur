@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:our_faridpur/controller/blood_post_screen.dart';
+import 'package:our_faridpur/controller/blood_post_screen_controller.dart';
 import 'package:our_faridpur/utlis/app_colors.dart';
 import 'package:our_faridpur/utlis/custom_text_style.dart';
 import 'package:our_faridpur/views/blood/blood_create_post_screen.dart';
@@ -21,7 +21,7 @@ class BloodPostScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title:  HeadingTwo(data: "রক্তের পোস্ট",color: Colors.white,),
+        title:  const HeadingTwo(data: "রক্তের পোস্ট",color: Colors.white,),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("blood").snapshots(),
@@ -30,7 +30,7 @@ class BloodPostScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No posts available."));
+            return const Center(child: HeadingThree(data: "এই মুহূর্তে কোন পোস্ট নেই।"));
           }
 
           final posts = snapshot.data!.docs;
@@ -51,32 +51,57 @@ class BloodPostScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HeadingTwo(data: "💁 রোগীর সমস্যা: ${data['patientProblem'] ?? "N/A"}"),
-                      HeadingThree(data: "🔴 রক্তের গ্রুপ: ${data['bloodGroup'] ?? "N/A"}"),
-                      HeadingThree(data: "💉 রক্তের পরিমাণ: ${data['bloodQuantity'] ?? "N/A"}"),
-                      HeadingThree(data: "💊 হিমোগ্লোবিনের: ${data['hemoglobinLevel'] ?? "N/A"}"),
-                      HeadingThree(data: "⌚ রক্তদানের সময়: ${data['donationTime'] ?? "N/A"}"),
-                      HeadingThree(data: "📅 রক্তদানের তারিখ: ${data['donationDate'] ?? "N/A"}"),
-                      HeadingThree(data: "🏥 রক্তদানের স্থান: ${data['donationPlace'] ?? "N/A"}"),
-                      HeadingThree(data: "☎ যোগাযোগ: ${data['contact'] ?? "N/A"}"),
-
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () => _showEditDialog(context, post.id, data),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _showDeleteDialog(context, post.id),
+                          HeadingThree(data: "🩸 রক্তের গ্রুপ: ${data['bloodGroup'] ?? "N/A"}",color: Colors.black,fontWeight: FontWeight.w600,fontSize: sizeHeight * 0.022,),
+
+                          PopupMenuButton<String>(
+                            icon: const Icon(Icons.more_vert_outlined),
+                            onSelected: (value) {
+                              if (value == 'Edit') {
+                                _showEditDialog(context, post.id, data);
+                              } else if (value == 'Delete') {
+                                _showDeleteDialog(context, post.id);
+                              }
+                            },
+                            itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                value: 'Edit',
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.edit,color: AppColors.primaryColor,),
+                                    SizedBox(width: 8),
+                                    Text('Edit'),
+                                  ],
+                                ),
+                              ),
+                              const PopupMenuItem(
+                                value: 'Delete',
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.delete, color: Colors.red),
+                                    SizedBox(width: 8),
+                                    Text('Delete'),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
+                      HeadingThree(data: "💁 রোগীর সমস্যা: ${data['patientProblem'] ?? "N/A"}"),
+                      HeadingThree(data: "💉 রক্তের পরিমাণ: ${data['bloodQuantity'] ?? "N/A"}"),
+                      HeadingThree(data: "💊 হিমোগ্লোবিনের পরিমাণ: ${data['hemoglobinLevel'] ?? "N/A"}"),
+                      HeadingThree(data: "🏥 রক্তদানের স্থান: ${data['donationPlace'] ?? "N/A"}"),
+                      HeadingThree(data: "☎ যোগাযোগ: ${data['contact'] ?? "N/A"}"),
+                      HeadingThree(data: "⌚ রক্তদানের সময়: ${data['donationTime'] ?? "N/A"}"),
+                      HeadingThree(data: "📅 রক্তদানের তারিখ: ${data['donationDate'] ?? "N/A"}",color: AppColors.primaryColor,fontWeight: FontWeight.w700,),
                     ],
                   ),
                 ),
               );
+
             },
           );
         },
@@ -118,7 +143,7 @@ class BloodPostScreen extends StatelessWidget {
         final sizeWidth = MediaQuery.of(context).size.width;
 
         return AlertDialog(
-          title: Center(child: HeadingTwo(data: 'Edit Post')),
+          title: const Center(child: HeadingTwo(data: 'Edit Post')),
           content: SizedBox(
             width: sizeWidth * 0.85,
             child: SingleChildScrollView(
@@ -127,7 +152,7 @@ class BloodPostScreen extends StatelessWidget {
                   _buildTextField("রোগীর সমস্যা", controller.patientProblemController),
                   _buildPopupMenuField("রক্তের গ্রুপ", controller.bloodGroupController),
                   _buildTextField("রক্তের পরিমাণ", controller.bloodQuantityController),
-                  _buildTextField("হিমোগ্লোবিনের", controller.hemoglobinLevelController),
+                  _buildTextField("হিমোগ্লোবিনের পরিমাণ", controller.hemoglobinLevelController),
                   _buildDateTimePicker(context, "রক্তদানের সময়", controller.donationTimeController, isTimePicker: true),
                   _buildDateTimePicker(context, "রক্তদানের তারিখ", controller.donationDateController, isTimePicker: false),
                   _buildTextField("রক্তদানের স্থান", controller.donationPlaceController),
@@ -140,15 +165,15 @@ class BloodPostScreen extends StatelessWidget {
                         onPressed: () {
                           Get.back();
                         },
-                        child: HeadingThree(data: 'Cancel'),
+                        child: const HeadingThree(data: 'Cancel'),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           controller.updatePost(postId);
                           Get.back();
                         },
-                        child: HeadingThree(data: 'Save', color: Colors.white),
                         style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryColor),
+                        child: const HeadingThree(data: 'Save', color: Colors.white),
                       ),
                     ],
                   ),
@@ -156,7 +181,6 @@ class BloodPostScreen extends StatelessWidget {
               ),
             ),
           ),
-          actions: [],
         );
       },
     );
@@ -164,7 +188,7 @@ class BloodPostScreen extends StatelessWidget {
 
   Widget _buildTextField(String label, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding:  EdgeInsets.symmetric(vertical: 8.h),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
@@ -209,7 +233,7 @@ class BloodPostScreen extends StatelessWidget {
           labelText: label,
           border: const OutlineInputBorder(),
           suffixIcon: IconButton(
-            icon: Icon(isTimePicker ? Icons.access_time : Icons.calendar_today),
+            icon: Icon(isTimePicker ? Icons.access_time : Icons.calendar_month),
             onPressed: () async {
               if (isTimePicker) {
                 final pickedTime = await showTimePicker(
