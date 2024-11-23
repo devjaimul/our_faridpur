@@ -43,6 +43,7 @@ ThemeData lightTheme(context) {
             borderSide: const BorderSide(color: Colors.red),
             borderRadius: BorderRadius.circular(50.r),
           )),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: AppColors.primaryColor,foregroundColor: Colors.white)
 
 
 

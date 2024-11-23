@@ -5,24 +5,32 @@ import 'package:get/get.dart';
 import 'package:our_faridpur/controller/blood_post_screen_controller.dart';
 import 'package:our_faridpur/utlis/app_colors.dart';
 import 'package:our_faridpur/utlis/custom_text_style.dart';
-import 'package:our_faridpur/views/blood/blood_create_post_screen.dart';
+import 'package:our_faridpur/views/blood/post/blood_create_post_screen.dart';
 import 'package:our_faridpur/widgets/dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class BloodPostScreen extends StatelessWidget {
   BloodPostScreen({super.key});
 
   final controller = Get.put(BloodPostScreenController());
+  // Function to launch the dialer with cleaned phone number
+  Future<void> _launchDialer(String phoneNumber) async {
+    final cleanNumber = phoneNumber.replaceAll(RegExp(r'[^0-9+]'), ''); // Remove non-numeric characters
+    final Uri url = Uri.parse('tel:$cleanNumber');
 
+    if (await launchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final sizeHeight = MediaQuery.sizeOf(context).height;
     final sizeWidth = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-      appBar: AppBar(
-        title:  const HeadingTwo(data: "রক্তের পোস্ট",color: Colors.white,),
-      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("blood").snapshots(),
         builder: (context, snapshot) {
@@ -64,25 +72,43 @@ class BloodPostScreen extends StatelessWidget {
                               } else if (value == 'Delete') {
                                 _showDeleteDialog(context, post.id);
                               }
+                              else if (value == 'call') {
+                                final contact = data['contact'] ?? "";
+                                if (contact.isNotEmpty) {
+                                  _launchDialer(contact);
+                                } else {
+                                  Get.snackbar('Error', 'Contact number not available');
+                                }
+                              }
                             },
                             itemBuilder: (context) => [
-                              const PopupMenuItem(
+                               PopupMenuItem(
                                 value: 'Edit',
                                 child: Row(
                                   children: [
-                                    Icon(Icons.edit,color: AppColors.primaryColor,),
-                                    SizedBox(width: 8),
-                                    Text('Edit'),
+                                    const Icon(Icons.edit,color: AppColors.primaryColor,),
+                                    SizedBox(width: 8.w),
+                                    const Text('এডিট'),
                                   ],
                                 ),
                               ),
-                              const PopupMenuItem(
+                               PopupMenuItem(
                                 value: 'Delete',
                                 child: Row(
                                   children: [
-                                    Icon(Icons.delete, color: Colors.red),
-                                    SizedBox(width: 8),
-                                    Text('Delete'),
+                                    const Icon(Icons.delete, color: Colors.red),
+                                    SizedBox(width: 8.w),
+                                    const Text('ডিলিট'),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 'call',
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.phone, color: AppColors.primaryColor),
+                                    SizedBox(width: 8.w),
+                                    const Text('Call'),
                                   ],
                                 ),
                               ),
@@ -107,11 +133,11 @@ class BloodPostScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primaryColor,
+
         onPressed: () {
           Get.to(() => const BloodCreatePostScreen());
         },
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add,),
       ),
     );
   }
@@ -121,9 +147,9 @@ class BloodPostScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: 'Are you sure you want to delete this post?',
-        cancelButtonText: 'Cancel',
-        confirmButtonText: 'Yes, Delete',
+        title: 'আপনি কি এই পোস্টটি মুছতে চান?',
+        cancelButtonText: 'না',
+        confirmButtonText: 'হ্যাঁ, মুছুন',
         onCancel: () => Navigator.pop(context),
         onConfirm: () {
           controller.deletePost(postId);
@@ -143,7 +169,7 @@ class BloodPostScreen extends StatelessWidget {
         final sizeWidth = MediaQuery.of(context).size.width;
 
         return AlertDialog(
-          title: const Center(child: HeadingTwo(data: 'Edit Post')),
+          title: const Center(child: HeadingTwo(data: 'এডিট পোস্ট')),
           content: SizedBox(
             width: sizeWidth * 0.85,
             child: SingleChildScrollView(
@@ -165,7 +191,7 @@ class BloodPostScreen extends StatelessWidget {
                         onPressed: () {
                           Get.back();
                         },
-                        child: const HeadingThree(data: 'Cancel'),
+                        child: const HeadingThree(data: 'বাতিল'),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -173,7 +199,7 @@ class BloodPostScreen extends StatelessWidget {
                           Get.back();
                         },
                         style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryColor),
-                        child: const HeadingThree(data: 'Save', color: Colors.white),
+                        child: const HeadingThree(data: 'সেভ', color: Colors.white),
                       ),
                     ],
                   ),
