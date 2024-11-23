@@ -1,16 +1,10 @@
 # our_faridpur
 
-A new Flutter project.
 
-## Getting Started
+app link
 
-This project is a starting point for a Flutter application.
+https://drive.google.com/file/d/1-jRStMTm5QEDL_kK9FnJnG9k8abN6Spj/view?usp=drive_link
 
-A few resources to get you started if this is your first Flutter project:
+presentation link 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://www.canva.com/design/DAGXOZFtDU4/ApwU5w_dWwQQKwQEbxv9fg/view?utm_content=DAGXOZFtDU4&utm_campaign=designshare&utm_medium=link&utm_source=editor
